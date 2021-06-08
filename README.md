@@ -3,7 +3,7 @@ POC for api writen in go using goarm
 
 
 
-#Problem statement:
+## Problem statement
 Let's create a mock social media app. We'll have users and profiles. Each user will be linked to a profile. Profile can't exist without a user
 You'll need to support 4 APIs
 
@@ -13,4 +13,4 @@ You'll need to support 4 APIs
 * GET /profile -> Get all profile
 * GET /user/{user_id}/profile -> profile of a particular user
 
-Problem contributed by :
+Problem contributed by @rajat-godi
