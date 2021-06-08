@@ -13,4 +13,4 @@ You'll need to support 4 APIs
 * GET /profile -> Get all profile
 * GET /user/{user_id}/profile -> profile of a particular user
 
-Problem contributed by @rajat-godi
+Problem statement contributed by [Rajat Godi](https://github.com/rajat-godi)
