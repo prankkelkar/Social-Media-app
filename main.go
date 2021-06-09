@@ -28,16 +28,37 @@ func main() {
 		panic(err.Error())
 	}
 
-	// users := User{
-	// 	Name: "pk", Email: "pk@gmail.com", Add: "hn297", Profile: Profile{Hobbies: []string{"cycle", "run"}, Languages: []string{"hindi", "marathi"}}}
-	// // people := []Person{{First: "pk", Age: 25}, {First: "sk", Age: 12}}
+	users := []User{
+		{
+			Name:    "pk",
+			Email:   "pk@gmail.com",
+			Add:     "hn297",
+			Profile: Profile{Hobbies: "cycling", Languages: "hindi"},
+		},
+		{
+			Name:    "jk",
+			Email:   "jk@gmail.com",
+			Add:     "mnt76",
+			Profile: Profile{Hobbies: "chess", Languages: "englis"},
+		},
+		{
+			Name:    "vb",
+			Email:   "vb@gmail.com",
+			Add:     "jhjh",
+			Profile: Profile{Hobbies: "reading", Languages: "marathi"},
+		},
+	}
+
+	fmt.Println(users)
 	db.AutoMigrate(&User{})
-	// result := db.Create(&users)
-	// if result.Error != nil {
-	// 	panic(result.Error)
-	// }
+	db.AutoMigrate(&Profile{})
+	result := db.Create(&users)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+
 	fmt.Println("Writing to the database is completed")
-	// fmt.Println(result.RowsAffected)
+	fmt.Println(result.RowsAffected)
 
 }
 

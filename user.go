@@ -7,9 +7,22 @@ import (
 	"gorm.io/gorm"
 )
 
+type CreditCard struct {
+	gorm.Model
+	Number  string
+	CuserID uint
+}
+
+type Cuser struct {
+	gorm.Model
+	Name       string
+	CreditCard CreditCard
+}
 type Profile struct {
+	gorm.Model
 	Hobbies   string `json:"Hobbies"`
 	Languages string `json:"Languages"`
+	UserID    uint
 }
 
 type User struct {
@@ -17,7 +30,7 @@ type User struct {
 	Name    string `json:"Name"`
 	Email   string `json:"Email"`
 	Add     string `json:"Address"`
-	Profile `gorm:"embedded"`
+	Profile Profile
 }
 
 type Person struct {
