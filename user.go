@@ -7,24 +7,33 @@ import (
 	"gorm.io/gorm"
 )
 
-type Profile struct {
-	gorm.Model
-	// Hobbies   []Hobbies
-	//Languages []Languages
+type MultiString []string
 
-	UserID uint
-}
-
-type Languages struct {
+type CreditCard struct {
 	gorm.Model
-	Lname     string
-	ProfileID int
+	Number  string
+	CuserID uint
 }
 
 type Hobbies struct {
+	Hname     string `gorm:"primaryKey; not null"`
+	ProfileID int    `gorm:"primaryKey; not null"`
+}
+
+type Languages struct {
+	Lname     string `gorm:"primaryKey; not null"`
+	ProfileID int    `gorm:"primaryKey; not null"`
+}
+type Profile struct {
 	gorm.Model
-	Hname     string
-	ProfileID int
+	Hobbies   []Hobbies   `json:"Hobbies"`
+	Languages []Languages `json:"Languages"`
+	UserID    int
+}
+
+type Skill struct {
+	Sname    string `gorm:"primaryKey; not null"`
+	PersonID int    `gorm:"primaryKey; not null"`
 }
 
 type User struct {
@@ -33,6 +42,13 @@ type User struct {
 	Email   string `json:"Email"`
 	Add     string `json:"Address"`
 	Profile Profile
+}
+
+type Person struct {
+	gorm.Model
+	First  string
+	Skills []Skill
+	Age    int
 }
 
 func AllUsers(w http.ResponseWriter, r *http.Request) {
