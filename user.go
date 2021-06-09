@@ -7,22 +7,24 @@ import (
 	"gorm.io/gorm"
 )
 
-type CreditCard struct {
-	gorm.Model
-	Number  string
-	CuserID uint
-}
-
-type Cuser struct {
-	gorm.Model
-	Name       string
-	CreditCard CreditCard
-}
 type Profile struct {
 	gorm.Model
-	Hobbies   string `json:"Hobbies"`
-	Languages string `json:"Languages"`
-	UserID    uint
+	// Hobbies   []Hobbies
+	//Languages []Languages
+
+	UserID uint
+}
+
+type Languages struct {
+	gorm.Model
+	Lname     string
+	ProfileID int
+}
+
+type Hobbies struct {
+	gorm.Model
+	Hname     string
+	ProfileID int
 }
 
 type User struct {
@@ -31,12 +33,6 @@ type User struct {
 	Email   string `json:"Email"`
 	Add     string `json:"Address"`
 	Profile Profile
-}
-
-type Person struct {
-	gorm.Model
-	First string
-	Age   int
 }
 
 func AllUsers(w http.ResponseWriter, r *http.Request) {

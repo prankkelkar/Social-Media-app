@@ -27,38 +27,59 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+	// h1 := []Hobbies{
+	// 	{Hname: "chess"},
+	// 	{Hname: "cook"},
+	// }
 
-	users := []User{
-		{
-			Name:    "pk",
-			Email:   "pk@gmail.com",
-			Add:     "hn297",
-			Profile: Profile{Hobbies: "cycling", Languages: "hindi"},
-		},
-		{
-			Name:    "jk",
-			Email:   "jk@gmail.com",
-			Add:     "mnt76",
-			Profile: Profile{Hobbies: "chess", Languages: "englis"},
-		},
-		{
-			Name:    "vb",
-			Email:   "vb@gmail.com",
-			Add:     "jhjh",
-			Profile: Profile{Hobbies: "reading", Languages: "marathi"},
-		},
-	}
+	// h2 := []Hobbies{
+	// 	{Hname: "roam"},
+	// 	{Hname: "sleep"},
+	// }
 
-	fmt.Println(users)
+	// l1 := []Languages{
+	// 	{Lname: "chess"},
+	// 	{Lname: "cook"},
+	// }
+
+	// l2 := []Languages{
+	// 	{Lname: "roam"},
+	// 	{Lname: "sleep"},
+	// }
+
+	// users := []User{
+	// 	{
+	// 		Name:    "pk",
+	// 		Email:   "pk@gmail.com",
+	// 		Add:     "hn297",
+	// 		Profile: Profile{Hobbies: h1, Languages: l1},
+	// 	},
+	// 	{
+	// 		Name:    "jk",
+	// 		Email:   "jk@gmail.com",
+	// 		Add:     "mnt76",
+	// 		Profile: Profile{Hobbies: h2, Languages: l1},
+	// 	},
+	// 	{
+	// 		Name:    "vb",
+	// 		Email:   "vb@gmail.com",
+	// 		Add:     "jhjh",
+	// 		Profile: Profile{Hobbies: h2, Languages: l2},
+	// 	},
+	// }
+
+	// fmt.Println(users)
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Profile{})
-	result := db.Create(&users)
-	if result.Error != nil {
-		panic(result.Error)
-	}
+	// db.AutoMigrate(&Languages{})
+	//db.AutoMigrate(&Hobbies{})
+	// result := db.Create(&users)
+	// if result.Error != nil {
+	// 	panic(result.Error)
+	// }
 
 	fmt.Println("Writing to the database is completed")
-	fmt.Println(result.RowsAffected)
+	// fmt.Println(result.RowsAffected)
 
 }
 
