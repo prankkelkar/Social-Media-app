@@ -27,12 +27,9 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	// user := User{
-	// 	Name:    "pk",
-	// 	Email:   "pk@gmail.com",
-	// 	Add:     "hn297",
-	// 	Profile: Profile{Hobbies: []Hobbies{{Hname: "cycle"}, {Hname: "football"}}, Languages: []Languages{{Lname: "eng"}, {Lname: "mar"}}},
-	// }
+
+	//sample examples
+
 	h1 := []Hobbies{
 		{Hname: "chess"},
 		{Hname: "cook"},
@@ -44,15 +41,14 @@ func main() {
 	}
 
 	l1 := []Languages{
-		{Lname: "chess"},
-		{Lname: "cook"},
+		{Lname: "eng"},
+		{Lname: "kan"},
 	}
 
 	l2 := []Languages{
-		{Lname: "roam"},
-		{Lname: "sleep"},
+		{Lname: "mara"},
+		{Lname: "mara"},
 	}
-
 	users := []User{
 		{
 			Name:    "pk",
@@ -74,21 +70,16 @@ func main() {
 		},
 	}
 
-	// db.AutoMigrate(&Profile{})
-	// db.AutoMigrate(&Languages{})
-	// db.AutoMigrate(&Hobbies{})
-	// db.AutoMigrate(&User{})
-	// l1 := []Languages{{Lname: "eng"},
-	// 	{Lname: "mm"},
-	// }
+	db.AutoMigrate(&Profile{})
+	db.AutoMigrate(&Languages{})
+	db.AutoMigrate(&Hobbies{})
+	db.AutoMigrate(&User{})
 
-	// p := Profile{Languages: l1}
 	result := db.Create(&users)
 	if result.Error != nil {
 		panic("messed up")
 	}
 	fmt.Println("Writing to the database is completed")
-	// fmt.Println(result.RowsAffected)
 
 }
 

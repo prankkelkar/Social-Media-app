@@ -39,7 +39,7 @@ type Skill struct {
 type User struct {
 	gorm.Model
 	Name    string `json:"Name"`
-	Email   string `json:"Email"`
+	Email   string `json:"Email" gorm:"unique"`
 	Add     string `json:"Address"`
 	Profile Profile
 }
