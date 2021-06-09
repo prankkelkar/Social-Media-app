@@ -27,56 +27,63 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	user := User{
-		Name:    "pk",
-		Email:   "pk@gmail.com",
-		Add:     "hn297",
-		Profile: Profile{Hobbies: []Hobbies{{Hname: "cycle"}, {Hname: "football"}}, Languages: []Languages{{Lname: "eng"}, {Lname: "mar"}}},
+	// user := User{
+	// 	Name:    "pk",
+	// 	Email:   "pk@gmail.com",
+	// 	Add:     "hn297",
+	// 	Profile: Profile{Hobbies: []Hobbies{{Hname: "cycle"}, {Hname: "football"}}, Languages: []Languages{{Lname: "eng"}, {Lname: "mar"}}},
+	// }
+	h1 := []Hobbies{
+		{Hname: "chess"},
+		{Hname: "cook"},
 	}
-	// users := []User{
-	// 	{
-	// 		Name:    "pk",
-	// 		Email:   "pk@gmail.com",
-	// 		Add:     "hn297",
-	// 		Profile: Profile{Hobbies: "cycling", Languages: "hindi"},
-	// 	},
-	// 	{
-	// 		Name:    "jk",
-	// 		Email:   "jk@gmail.com",
-	// 		Add:     "mnt76",
-	// 		Profile: Profile{Hobbies: "chess", Languages: "englis"},
-	// 	},
-	// 	{
-	// 		Name:    "vb",
-	// 		Email:   "vb@gmail.com",
-	// 		Add:     "jhjh",
-	// 		Profile: Profile{Hobbies: "reading", Languages: "marathi"},
-	// 	},
-	// }
 
-	// fmt.Println(users)
-	// db.AutoMigrate(&User{})
+	h2 := []Hobbies{
+		{Hname: "roam"},
+		{Hname: "sleep"},
+	}
+
+	l1 := []Languages{
+		{Lname: "chess"},
+		{Lname: "cook"},
+	}
+
+	l2 := []Languages{
+		{Lname: "roam"},
+		{Lname: "sleep"},
+	}
+
+	users := []User{
+		{
+			Name:    "pk",
+			Email:   "pk@gmail.com",
+			Add:     "hn297",
+			Profile: Profile{Hobbies: h1, Languages: l1},
+		},
+		{
+			Name:    "jk",
+			Email:   "jk@gmail.com",
+			Add:     "mnt76",
+			Profile: Profile{Hobbies: h2, Languages: l1},
+		},
+		{
+			Name:    "vb",
+			Email:   "vb@gmail.com",
+			Add:     "jhjh",
+			Profile: Profile{Hobbies: h2, Languages: l2},
+		},
+	}
+
 	// db.AutoMigrate(&Profile{})
-	// result := db.Create(&users)
-	// if result.Error != nil {
-	// 	panic(result.Error)
-	// }
-	// db.Model(&Person).Related(&Skill{})
-	// db.AutoMigrate(&Person{})
-	// db.AutoMigrate(&Skill{})
-	// sk := []Skill{{Sname: "coding"}, {Sname: "talking"}, {Sname: "walking"}}
-	// p := Person{First: "rajat", Age: 22, Skills: sk}
-
-	db.AutoMigrate(&Profile{})
-	db.AutoMigrate(&Languages{})
-	db.AutoMigrate(&Hobbies{})
-	db.AutoMigrate(&User{})
+	// db.AutoMigrate(&Languages{})
+	// db.AutoMigrate(&Hobbies{})
+	// db.AutoMigrate(&User{})
 	// l1 := []Languages{{Lname: "eng"},
 	// 	{Lname: "mm"},
 	// }
 
 	// p := Profile{Languages: l1}
-	result := db.Create(&user)
+	result := db.Create(&users)
 	if result.Error != nil {
 		panic("messed up")
 	}
