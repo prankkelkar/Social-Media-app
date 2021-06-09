@@ -15,6 +15,8 @@ func handleRequest() {
 	myRoute := mux.NewRouter().StrictSlash(true)
 	myRoute.HandleFunc("/", homeHandler).Methods("GET")
 	myRoute.HandleFunc("/users", AllUsers).Methods("GET")
+	myRoute.HandleFunc("/profiles", AllProfiles).Methods("GET")
+	myRoute.HandleFunc("/user/{user_id}/profile", SpecificProfile).Methods("GET")
 	myRoute.HandleFunc("/user/{name}/{email}", Newuser).Methods("POST")
 	myRoute.HandleFunc("/users/{name}", Deluser).Methods("DELETE")
 	myRoute.HandleFunc("/user/{name}/{email}", Deluser).Methods("PUT")
@@ -22,6 +24,10 @@ func handleRequest() {
 }
 
 func main() {
+	fmt.Println("Initiating server")
+	handleRequest()
+}
+func newmain() {
 	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

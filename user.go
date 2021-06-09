@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -59,8 +61,46 @@ func AllUsers(w http.ResponseWriter, r *http.Request) {
 	// 	{"gk", "gk@gmail.com", "hn757", Profile{Hobbies: []string{"chess", "walk"}, Languages: []string{"hindi", "marathi"}}},
 	// }
 
-	// //Encode the list in json and print on the screen.
-	// json.NewEncoder(w).Encode(users)
+	//Get data from mysql
+	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var users []User
+	// Get all records
+	result := db.Preload("Profile").Preload("Profile.Languages").Preload("Profile.Hobbies").Find(&users)
+	// SELECT * FROM users;
+	if result.Error != nil {
+		panic("Issue with DB")
+	}
+
+	//Encode the list in json and print on the screen.
+	json.NewEncoder(w).Encode(users)
+}
+
+func AllProfiles(w http.ResponseWriter, r *http.Request) {
+	//Get data from mysql
+	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var profiles []Profile
+	// Get all records
+	result := db.Preload("Languages").Preload("Hobbies").Find(&profiles)
+	// SELECT * FROM users;
+	if result.Error != nil {
+		panic("Issue with DB")
+	}
+
+	//Encode the list in json and print on the screen.
+	json.NewEncoder(w).Encode(profiles)
+}
+
+func SpecificProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 func Newuser(w http.ResponseWriter, r *http.Request) {
