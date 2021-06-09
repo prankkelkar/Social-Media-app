@@ -1,13 +1,14 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func handleRequest() {
@@ -21,23 +22,23 @@ func handleRequest() {
 }
 
 func main() {
-	db, err := sql.Open("mysql", "pk:pk@tcp(9.30.95.8:3306)/test")
-
+	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Println("hello: initiating server")
 
-	defer db.Close()
-	//handleRequest()
-	// perform a db.Query insert
-	insert, err := db.Query("INSERT INTO egg VALUES ('from code')")
+	// users := User{
+	// 	Name: "pk", Email: "pk@gmail.com", Add: "hn297", Profile: Profile{Hobbies: []string{"cycle", "run"}, Languages: []string{"hindi", "marathi"}}}
+	// // people := []Person{{First: "pk", Age: 25}, {First: "sk", Age: 12}}
+	db.AutoMigrate(&User{})
+	// result := db.Create(&users)
+	// if result.Error != nil {
+	// 	panic(result.Error)
+	// }
+	fmt.Println("Writing to the database is completed")
+	// fmt.Println(result.RowsAffected)
 
-	// if there is an error inserting, handle it
-	if err != nil {
-		panic(err.Error())
-	}
-	defer insert.Close()
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
