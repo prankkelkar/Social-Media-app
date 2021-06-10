@@ -1,0 +1,22 @@
+{
+    "Name" : "nam",
+    "Email" : "sn@gmail.com",
+    "Profile": {
+        "Hobbies": [
+            {
+                "Hname": "chess"
+            },
+            {
+                "Hname": "chess"
+            }
+        ],
+        "Languages": [
+            {
+                "Lname": "french"
+            },
+            {
+                "Lname": "History"
+            }
+        ]
+    }
+}

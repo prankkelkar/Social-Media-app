@@ -17,12 +17,12 @@ type CreditCard struct {
 }
 
 type Hobbies struct {
-	Hname     string `gorm:"primaryKey; not null"`
+	Hname     string `json:"Hname" gorm:"primaryKey; not null"`
 	ProfileID int    `gorm:"primaryKey; not null"`
 }
 
 type Languages struct {
-	Lname     string `gorm:"primaryKey; not null"`
+	Lname     string `json:"Lname" gorm:"primaryKey; not null"`
 	ProfileID int    `gorm:"primaryKey; not null"`
 }
 type Profile struct {
@@ -96,8 +96,12 @@ func SpecificProfile(w http.ResponseWriter, r *http.Request) {
 func Newuser(w http.ResponseWriter, r *http.Request) {
 	//Decode the json
 	//Frame an object of type user and add it to the database
-	// json.NewDecoder(w).Decode(users)
-	// fmt.Fprintf(w, "New users endpoint hit")
+	var u User
+	json.NewDecoder(r.Body).Decode(&u)
+	db := GetCon()
+	db.Create(&u)
+	//fmt.Println(u)
+	fmt.Fprintf(w, "User reached me")
 
 }
 
