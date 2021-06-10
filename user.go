@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -62,12 +61,7 @@ func AllUsers(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	//Get data from mysql
-	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic(err.Error())
-	}
-
+	db := GetCon()
 	var users []User
 	// Get all records
 	result := db.Preload("Profile").Preload("Profile.Languages").Preload("Profile.Hobbies").Find(&users)
@@ -82,11 +76,7 @@ func AllUsers(w http.ResponseWriter, r *http.Request) {
 
 func AllProfiles(w http.ResponseWriter, r *http.Request) {
 	//Get data from mysql
-	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic(err.Error())
-	}
+	db := GetCon()
 
 	var profiles []Profile
 	// Get all records
@@ -106,7 +96,8 @@ func SpecificProfile(w http.ResponseWriter, r *http.Request) {
 func Newuser(w http.ResponseWriter, r *http.Request) {
 	//Decode the json
 	//Frame an object of type user and add it to the database
-	fmt.Fprintf(w, "New users endpoint hit")
+	// json.NewDecoder(w).Decode(users)
+	// fmt.Fprintf(w, "New users endpoint hit")
 
 }
 
