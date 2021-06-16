@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Social-Media-app/user"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"gorm.io/driver/mysql"
@@ -14,12 +15,12 @@ import (
 func handleRequest() {
 	myRoute := mux.NewRouter().StrictSlash(true)
 	myRoute.HandleFunc("/", homeHandler).Methods("GET")
-	myRoute.HandleFunc("/users", AllUsers).Methods("GET")
-	myRoute.HandleFunc("/profiles", AllProfiles).Methods("GET")
-	myRoute.HandleFunc("/user/{user_id}/profile", SpecificProfile).Methods("GET")
-	myRoute.HandleFunc("/user/{name}/{email}", Newuser).Methods("POST")
-	myRoute.HandleFunc("/users/{name}", Deluser).Methods("DELETE")
-	myRoute.HandleFunc("/user/{name}/{email}", Deluser).Methods("PUT")
+	myRoute.HandleFunc("/users", user.AllUsers).Methods("GET")
+	myRoute.HandleFunc("/profiles", user.AllProfiles).Methods("GET")
+	myRoute.HandleFunc("/user/{user_id}/profile", user.SpecificProfile).Methods(http.MethodGet)
+	myRoute.HandleFunc("/user", user.Newuser).Methods("POST")
+	myRoute.HandleFunc("/users/{name}", user.Deluser).Methods("DELETE")
+	myRoute.HandleFunc("/user/{name}/{email}", user.Deluser).Methods("PUT")
 	log.Fatal(http.ListenAndServe(":8081", myRoute))
 }
 
@@ -27,6 +28,7 @@ func main() {
 	fmt.Println("Initiating server")
 	handleRequest()
 }
+
 func newmain() {
 	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -36,50 +38,50 @@ func newmain() {
 
 	//sample examples
 
-	h1 := []Hobbies{
+	h1 := []user.Hobbies{
 		{Hname: "chess"},
 		{Hname: "cook"},
 	}
 
-	h2 := []Hobbies{
+	h2 := []user.Hobbies{
 		{Hname: "roam"},
 		{Hname: "sleep"},
 	}
 
-	l1 := []Languages{
+	l1 := []user.Languages{
 		{Lname: "eng"},
 		{Lname: "kan"},
 	}
 
-	l2 := []Languages{
+	l2 := []user.Languages{
 		{Lname: "mara"},
 		{Lname: "mara"},
 	}
-	users := []User{
+	users := []user.User{
 		{
 			Name:    "pk",
 			Email:   "pk@gmail.com",
 			Add:     "hn297",
-			Profile: Profile{Hobbies: h1, Languages: l1},
+			Profile: user.Profile{Hobbies: h1, Languages: l1},
 		},
 		{
 			Name:    "jk",
 			Email:   "jk@gmail.com",
 			Add:     "mnt76",
-			Profile: Profile{Hobbies: h2, Languages: l1},
+			Profile: user.Profile{Hobbies: h2, Languages: l1},
 		},
 		{
 			Name:    "vb",
 			Email:   "vb@gmail.com",
 			Add:     "jhjh",
-			Profile: Profile{Hobbies: h2, Languages: l2},
+			Profile: user.Profile{Hobbies: h2, Languages: l2},
 		},
 	}
 
-	db.AutoMigrate(&Profile{})
-	db.AutoMigrate(&Languages{})
-	db.AutoMigrate(&Hobbies{})
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&user.Profile{})
+	db.AutoMigrate(&user.Languages{})
+	db.AutoMigrate(&user.Hobbies{})
+	db.AutoMigrate(&user.User{})
 
 	result := db.Create(&users)
 	if result.Error != nil {
