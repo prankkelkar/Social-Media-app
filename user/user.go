@@ -56,12 +56,6 @@ type Person struct {
 }
 
 func AllUsers(w http.ResponseWriter, r *http.Request) {
-	//Way to go
-	//Using gorm get the list of users and store it in a slice
-	// users := []User{
-	// 	{"pk", "pk@gmail.com", "hn297", Profile{Hobbies: []string{"cycle", "run"}, Languages: []string{"hindi", "marathi"}}},
-	// 	{"gk", "gk@gmail.com", "hn757", Profile{Hobbies: []string{"chess", "walk"}, Languages: []string{"hindi", "marathi"}}},
-	// }
 
 	//Get data from mysql
 	db := database.GetCon()
@@ -70,6 +64,8 @@ func AllUsers(w http.ResponseWriter, r *http.Request) {
 	result := db.Preload("Profile").Preload("Profile.Languages").Preload("Profile.Hobbies").Find(&users)
 	// SELECT * FROM users;
 	if result.Error != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"Your request could not be processed"}`))
 		panic("Issue with DB")
 	}
 
@@ -86,6 +82,8 @@ func AllProfiles(w http.ResponseWriter, r *http.Request) {
 	result := db.Preload("Languages").Preload("Hobbies").Find(&profiles)
 	// SELECT * FROM users;
 	if result.Error != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"Your request could not be processed"}`))
 		panic("Issue with DB")
 	}
 
@@ -126,15 +124,53 @@ func Newuser(w http.ResponseWriter, r *http.Request) {
 	db := database.GetCon()
 	db.Create(&u)
 	//fmt.Println(u)
-	fmt.Fprintf(w, "User reached me")
+	fmt.Fprintf(w, "Creating new user")
 	json.NewEncoder(w).Encode(&u)
 
 }
 
 func Deluser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "del users endpoint hit")
+	id := -1
+	var err error
+	path_params := mux.Vars(r)
+	if val, ok := path_params["user_id"]; ok {
+		id, err = strconv.Atoi(val)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"message": "need a number"}`))
+			return
+		}
+	}
+	if id != -1 {
+		db := database.GetCon()
+		db.Delete(&User{}, id)
+		fmt.Fprintf(w, "User deleted")
+	}
+	fmt.Fprintf(w, "delete users endpoint hit")
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "update user users endpoint hit")
+	var p Profile
+	var u User
+	json.NewDecoder(r.Body).Decode(&p)
+	db := database.GetCon()
+
+	id := -1
+	var err error
+	path_params := mux.Vars(r)
+	if val, ok := path_params["user_id"]; ok {
+		id, err = strconv.Atoi(val)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"message": "need a number"}`))
+			return
+		}
+	}
+	if id != -1 {
+		db.Preload("Profile").Preload("Profile.Languages").Preload("Profile.Hobbies").First(&u, id)
+		//update Profile
+		u.Profile = p
+		db.Save(&u)
+		json.NewEncoder(w).Encode(&u)
+	}
 }

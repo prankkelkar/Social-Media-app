@@ -19,8 +19,8 @@ func handleRequest() {
 	myRoute.HandleFunc("/profiles", user.AllProfiles).Methods("GET")
 	myRoute.HandleFunc("/user/{user_id}/profile", user.SpecificProfile).Methods(http.MethodGet)
 	myRoute.HandleFunc("/user", user.Newuser).Methods("POST")
-	myRoute.HandleFunc("/users/{name}", user.Deluser).Methods("DELETE")
-	myRoute.HandleFunc("/user/{name}/{email}", user.Deluser).Methods("PUT")
+	myRoute.HandleFunc("/user/delete/{user_id}", user.Deluser).Methods("DELETE")
+	myRoute.HandleFunc("/user/create/profile/{user_id}", user.UpdateUser).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8081", myRoute))
 }
 
