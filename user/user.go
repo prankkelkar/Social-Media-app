@@ -35,24 +35,12 @@ type Profile struct {
 	UserID    int
 }
 
-type Skill struct {
-	Sname    string `gorm:"primaryKey; not null"`
-	PersonID int    `gorm:"primaryKey; not null"`
-}
-
 type User struct {
 	gorm.Model
 	Name    string `json:"Name"`
 	Email   string `json:"Email" gorm:"unique"`
 	Add     string `json:"Address"`
 	Profile Profile
-}
-
-type Person struct {
-	gorm.Model
-	First  string
-	Skills []Skill
-	Age    int
 }
 
 func AllUsers(w http.ResponseWriter, r *http.Request) {
