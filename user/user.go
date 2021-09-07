@@ -21,26 +21,26 @@ type CreditCard struct {
 
 type Hobbies struct {
 	Hname     string `json:"Hname" gorm:"primaryKey; not null"`
-	ProfileID int    `gorm:"primaryKey; not null"`
+	ProfileID uint   `gorm:"primaryKey"`
 }
 
 type Languages struct {
 	Lname     string `json:"Lname" gorm:"primaryKey; not null"`
-	ProfileID int    `gorm:"primaryKey; not null"`
+	ProfileID uint   `gorm:"primaryKey"`
 }
 type Profile struct {
 	gorm.Model
-	Hobbies   []Hobbies   `json:"Hobbies"`
-	Languages []Languages `json:"Languages"`
-	UserID    int
+	Hobbies   []Hobbies   `json:"Hobbies" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Languages []Languages `json:"Languages" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	UserID    uint
 }
 
 type User struct {
 	gorm.Model
-	Name    string `json:"Name"`
-	Email   string `json:"Email" gorm:"unique"`
-	Add     string `json:"Address"`
-	Profile Profile
+	Name    string  `json:"Name"`
+	Email   string  `json:"Email" gorm:"unique"`
+	Add     string  `json:"Address"`
+	Profile Profile `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 func AllUsers(w http.ResponseWriter, r *http.Request) {
@@ -134,7 +134,6 @@ func Deluser(w http.ResponseWriter, r *http.Request) {
 		db.Delete(&User{}, id)
 		fmt.Fprintf(w, "User deleted")
 	}
-	fmt.Fprintf(w, "delete users endpoint hit")
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {

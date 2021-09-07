@@ -25,11 +25,14 @@ func handleRequest() {
 }
 
 func main() {
+	//Use this function only first time.
+	//initialiseDB()
+
 	fmt.Println("Initiating server")
 	handleRequest()
 }
 
-func newmain() {
+func initialiseDB() {
 	dsn := "pk:pk@tcp(9.30.95.8:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -77,11 +80,10 @@ func newmain() {
 			Profile: user.Profile{Hobbies: h2, Languages: l2},
 		},
 	}
-
+	db.AutoMigrate(&user.User{})
 	db.AutoMigrate(&user.Profile{})
 	db.AutoMigrate(&user.Languages{})
 	db.AutoMigrate(&user.Hobbies{})
-	db.AutoMigrate(&user.User{})
 
 	result := db.Create(&users)
 	if result.Error != nil {
